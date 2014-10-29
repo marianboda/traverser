@@ -2,7 +2,12 @@
   "name": "traverser",
   "version": "0.0.1",
   "description": "Traversing files looking for photographs",
-  "main": "index.js",
+  "main": "index.html",
+  "window": {
+    "toolbar": false,
+    "width": 800,
+    "height": 600
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,7 +16,12 @@
   "dependencies": {
     "bower": "^1.3.12",
     "coffee-script": "^1.8.0",
+    "coffeelint": "^1.6.1",
     "gulp": "^3.8.9",
+    "gulp-coffee": "^2.2.0",
+    "gulp-coffeelint": "^0.4.0",
+    "gulp-shell": "^0.2.10",
+    "main-bower-files": "^2.1.0",
     "node-webkit-builder": "^0.1.4"
   }
 }

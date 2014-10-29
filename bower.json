@@ -1,0 +1,21 @@
+{
+  "name": "traverser",
+  "version": "0.0.1",
+  "homepage": "https://github.com/marianboda/traverser",
+  "authors": [
+    "Marian Boda <marianboda@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "~1.3.0",
+    "jquery": "~2.1.1"
+  }
+}
