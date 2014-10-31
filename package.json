@@ -4,7 +4,7 @@
   "description": "Traversing files looking for photographs",
   "main": "index.html",
   "window": {
-    "toolbar": false,
+    /*"toolbar": false,*/
     "width": 800,
     "height": 600
   },
@@ -14,6 +14,7 @@
   "author": "Marian Boda",
   "license": "ISC",
   "dependencies": {
+    "async": "^0.9.0",
     "bower": "^1.3.12",
     "coffee-script": "^1.8.0",
     "coffeelint": "^1.6.1",
@@ -22,6 +23,11 @@
     "gulp-coffeelint": "^0.4.0",
     "gulp-shell": "^0.2.10",
     "main-bower-files": "^2.1.0",
+    "mongodb": "^1.4.19",
+    "nedb": "^0.11.1",
     "node-webkit-builder": "^0.1.4"
+  },
+  "devDependencies": {
+    "cli-color": "^0.3.2"
   }
 }
