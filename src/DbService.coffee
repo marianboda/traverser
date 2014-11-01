@@ -5,25 +5,36 @@ db =
 
 # db.loadDatabase((err) -> console.error('db error', err) if err?)
 
-app.service 'DbService',
+app.service 'DbService', ($q) ->
   class DbService
-    constructor: ($q) ->
+    constructor: ->
       console.log 'DbService started'
-      @$q = $q
     getSome: ->
       console.log 'gettin some'
     addDir: (path) ->
       db.dir.insert {path: path, status: 0}, (err, newdoc) ->
         console.error err if err?
-        console.log newdoc
+        # console.log newdoc
 
-    addPhoto: (path) ->
-      db.photo.insert {path: path}, (err, newdoc) ->
-        console.error err if err?
-        console.log newdoc
+    getPhoto: (path) ->
+      defer = $q.defer()
+      db.photo.findOne {path:path}, (err, doc) ->
+        defer.resolve(doc)
+      defer.promise
+
+    addPhoto: (photo) ->
+      defer = $q.defer()
+      db.photo.insert photo, (err, newdoc) ->
+        if err?
+          console.error err
+          return defer.reject err
+        defer.resolve newdoc
+      defer.promise
 
     getDirs: () ->
-      defer = @$q.defer()
+      defer = $q.defer()
       db.dir.find {}, (err, docs) ->
         if err? then defer.reject err else defer.resolve docs
       defer.promise
+
+  new DbService()

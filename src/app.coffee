@@ -12,50 +12,65 @@ menu.items[0].submenu.append new gui.MenuItem({label: 'New'})
 menu.items[1].submenu.append new gui.MenuItem({label: 'New2'})
 menu.items[1].submenu.append new gui.MenuItem({label: 'Old2'})
 gui.Window.get().menu = menu
-# gui.Window.get().showDevTools()
+gui.Window.get().showDevTools()
 
 dir = '/Users/marianboda/temp/raw'
+dir = '/Volumes/HardDrive/Foto/FOTO process'
 previewSize = 2048
 thumbSize = 600
 collectionName = 'photo'
 acceptedFormats = ['jpg','jpe','jpeg','tif','tiff','cr2']
 
 getExt = (str) -> str.split('.').pop().toLowerCase()
-getPrevPath = (filename) -> "prevs/#{filename}.jpg"
+
 getThumbPath = (filename) -> "thumbs/#{filename}.jpg"
 getOrientCommand = (num) ->
     ['','','-flop','-rotate 180','-flip','-flip -rotate 90',
     	'-rotate 90','-flop -rotate 90','-rotate 270'][num]
 
 shouldProcessFilter = (task, callback) ->
-  return callback true
-  console.log "#{task} is gonna be processed"
+  # console.log "#{task} is gonna be processed"
   if getExt(task) not in acceptedFormats
-    console.log "#{task} not recognized"
+    # console.log "#{task} not recognized"
     return callback false
   callback true
 
 app = angular.module('app',[])
 app.controller 'AppController',
   class AppController
+    requestedCounter: 0
+    doneCounter: 0
     constructor: ($scope, DbService, ProcessService) ->
       $scope.model =
         text: '--not loaded yet--'
         files: []
+        errorFiles: []
+        requestedCount: 0
+        errorCount: 0
+        doneCount: 0
 
       DbService.getDirs().then (data) ->
         $scope.model.text = data.join()
 
-
-
       searchDir = (wha, dirname, dirs, files) ->
-        console.log('dir: '+dirname)
+        console.log('dir: '+dirname, files.length+' files', dirs.length+' dirs')
         DbService.addDir dirname
 
         async.filter files, shouldProcessFilter, (r) ->
-          DbService.addPhoto photo for photo in r
-          ProcessService.process photo for photo in r
-          $scope.$apply( -> $scope.model.files = $scope.model.files.concat(r) )
+          $scope.$apply ->
+            for photo in r
+              $scope.model.requestedCount++
+              # console.log 'process result: ',
+              ProcessService.queue(photo).then (data) ->
+                # console.log 'looks done to me ', data
+                $scope.model.files.push(data.path)
+                $scope.model.doneCount++
+              , (err) ->
+                # console.error 'got error here', err
+                $scope.model.errorFiles.push(photo)
+                $scope.model.errorCount++
+              , (notify) -> console.info 'notify on the app level'
+
 
       # mongo.connect mongoUrl, (err, db) ->
       # 	return console.log "could not connect #{err}".red if err?
