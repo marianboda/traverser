@@ -11,10 +11,11 @@ app.service 'DbService', ($q) ->
       console.log 'DbService started'
     getSome: ->
       console.log 'gettin some'
-    addDir: (path) ->
-      db.dir.insert {path: path, status: 0}, (err, newdoc) ->
-        console.error err if err?
-        # console.log newdoc
+
+    addDir: (dir) ->
+      db.dir.find {path: dir.path}, (err, doc) ->
+        db.dir.insert dir, (err, doc) ->
+          console.error err if err?
 
     getPhoto: (path) ->
       defer = $q.defer()

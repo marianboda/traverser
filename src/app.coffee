@@ -53,8 +53,12 @@ app.controller 'AppController',
         $scope.model.text = data.join()
 
       searchDir = (wha, dirname, dirs, files) ->
-        console.log('dir: '+dirname, files.length+' files', dirs.length+' dirs')
-        DbService.addDir dirname
+        dir =
+          path: dirname
+          filesCount: files.length
+          dirsCount: dirs.length
+        console.log('dir: '+dir.path)
+        DbService.addDir dir
 
         async.filter files, shouldProcessFilter, (r) ->
           $scope.$apply ->
