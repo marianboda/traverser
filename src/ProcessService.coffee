@@ -1,5 +1,4 @@
 fs = require 'fs'
-exec = (require 'child_process').exec
 gm = require 'gm'
 previewDir = process.env.HOME + '/temp/preview'
 thumbDir = process.env.HOME + '/temp/preview/thumb'
@@ -38,7 +37,7 @@ app.service 'ProcessService', ($q, DbService) ->
       async.series [
         (callback) => @dbFind(photo).then (data) ->
           callback(null, data)
-        ,(err) -> console.log 'chyba'; defer.reject('chyba'); callback 'nastala chyba'; 
+        ,(err) -> console.log 'chyba'; defer.reject("#{photo.path} already in DB"); callback "#{photo.path} in DB";
 
         (callback) => @md5(photo).then (data) =>
           console.log 'hash:'+data+' %c'+photo.path, 'color: orange'
@@ -68,6 +67,7 @@ app.service 'ProcessService', ($q, DbService) ->
           defer.notify('save done')
           callback(null,data)
       ], (err) ->
+        defer.reject err if err?
 
         # console.error 'series callback', err if err?
         # console.log 'all done: '+photo.path
@@ -82,7 +82,7 @@ app.service 'ProcessService', ($q, DbService) ->
           defer.resolve(null)
         else
           console.log 'exists in DB'
-          defer.reject()
+          defer.reject('error, already in DB')
       defer.promise
 
     md5: (photo) ->

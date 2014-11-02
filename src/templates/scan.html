@@ -1,0 +1,28 @@
+    <div id="con" >
+      <button ng-click="scan()" ng-init="count=0">
+        SCAN
+      </button>
+      <button ng-click="scam()" ng-init="count=0">
+        Increment
+      </button>
+<button ng-click="count = count + 1; alert('some shit')" ng-init="count=0">
+  Increment
+</button>
+<span>
+  count: {{count}}
+</span>
+      <hr>
+      <span>{{model.doneCount+model.errorCount}} / {{model.requestedCount}}</span>
+      <span style="color:red">Errors:{{model.errorCount}}</span>
+      <hr>
+      <h3>Successful:</h3>
+      <div ng-repeat="file in model.files">
+        {{file}}
+      </div>
+      <hr>
+      <h3>Failed:</h3>
+      <div ng-repeat="file in model.errorFiles" style="color: red">
+        {{file}}
+      </div>
+      <hr>
+    </div>

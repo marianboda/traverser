@@ -15,11 +15,11 @@ gui.Window.get().menu = menu
 gui.Window.get().showDevTools()
 
 dir = '/Users/marianboda/temp/raw'
-dir = '/Volumes/HardDrive/Foto/FOTO process'
+# dir = '/Volumes/HardDrive/Foto/FOTO process'
 previewSize = 2048
 thumbSize = 600
 collectionName = 'photo'
-acceptedFormats = ['jpg','jpe','jpeg','tif','tiff','cr2']
+acceptedFormats = ['jpg','jpe','jpeg','tif','tiff','cr2', 'mov']
 
 getExt = (str) -> str.split('.').pop().toLowerCase()
 
@@ -29,13 +29,20 @@ getOrientCommand = (num) ->
     	'-rotate 90','-flop -rotate 90','-rotate 270'][num]
 
 shouldProcessFilter = (task, callback) ->
-  # console.log "#{task} is gonna be processed"
+  console.log "#{task} is gonna be processed"
   if getExt(task) not in acceptedFormats
-    # console.log "#{task} not recognized"
+    console.log "#{task} not recognized"
     return callback false
   callback true
 
-app = angular.module('app',[])
+app = angular.module('app',["ngRoute"])
+app.config ($routeProvider) ->
+  $routeProvider.when('/home', {templateUrl: 'src/templates/home.html', controller: 'HomeScreenCtrl'})
+  $routeProvider.when('/stats', {templateUrl: 'src/templates/stats.html', controller: 'StatsScreenCtrl'})
+  $routeProvider.when('/scan', {templateUrl: 'src/templates/scan.html', controller: 'ScanScreenCtrl'})
+  .otherwise('/', {templateUrl: 'src/templates/home.html'})
+
+
 app.controller 'AppController',
   class AppController
     requestedCounter: 0
@@ -52,6 +59,8 @@ app.controller 'AppController',
       DbService.getDirs().then (data) ->
         $scope.model.text = data.join()
 
+      return null
+
       searchDir = (wha, dirname, dirs, files) ->
         dir =
           path: dirname
@@ -65,15 +74,18 @@ app.controller 'AppController',
             for photo in r
               $scope.model.requestedCount++
               # console.log 'process result: ',
-              ProcessService.queue(photo).then (data) ->
-                # console.log 'looks done to me ', data
-                $scope.model.files.push(data.path)
-                $scope.model.doneCount++
-              , (err) ->
-                # console.error 'got error here', err
-                $scope.model.errorFiles.push(photo)
-                $scope.model.errorCount++
-              , (notify) -> console.info 'notify on the app level'
+              console.log '%c processing '+photo, 'color: blue'
+              do (photo) ->
+                ProcessService.queue(photo).then (data) ->
+                  # console.log 'looks done to me ', data
+                  $scope.model.files.push(data.path)
+                  $scope.model.doneCount++
+                , (err) ->
+                  console.error 'got error here', err
+                  $scope.model.errorFiles.push(photo)
+
+                  $scope.model.errorCount++
+                , (notify) -> console.info 'notify on the app level'
 
 
       # mongo.connect mongoUrl, (err, db) ->
