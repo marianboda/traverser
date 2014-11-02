@@ -1,6 +1,7 @@
 gulp = require 'gulp'
 shell = require 'gulp-shell'
 coffee = require 'gulp-coffee'
+jade = require 'gulp-jade'
 mainBowerFiles = require 'main-bower-files'
 coffeelint = require 'gulp-coffeelint'
 Builder = require 'node-webkit-builder'
@@ -9,12 +10,15 @@ async = require 'async'
 
 srcDirs =
   js: 'src'
+  jade: 'src'
 destDirs =
   js: 'app'
   lib: 'app/lib'
+  templates:'app'
 
 paths =
   csFiles: ["#{srcDirs.js}/**/*.coffee"]
+  jadeFiles: ["#{srcDirs.jade}/**/*.jade"]
 
 gulp.task 'bowerFiles', ->
   gulp.src(mainBowerFiles()).pipe(gulp.dest('app/libs'))
@@ -28,8 +32,13 @@ gulp.task 'coffee', ->
   .pipe(coffee({bare: true}).on("error", (e) -> console.log(e); @end()))
   .pipe(gulp.dest(destDirs.js))
 
+gulp.task 'jade', ->
+  gulp.src(paths.jadeFiles).pipe(jade({pretty: true})).pipe(gulp.dest(destDirs.templates))
+
+
 gulp.task 'watch', ->
-  return gulp.watch [paths.csFiles], ['coffee']
+  gulp.watch [paths.csFiles], ['coffee']
+  gulp.watch [paths.jadeFiles], ['jade']
 
 gulp.task 'build', ['coffee'], ->
   nw = new Builder
@@ -48,4 +57,4 @@ gulp.task 'build', ['coffee'], ->
 gulp.task 'run', ['build'], shell.task('open ./build/traverser/osx/Traverser.app')
 
 
-gulp.task 'default', ['coffee'], ->
+gulp.task 'default', ['coffee', 'jade'], ->

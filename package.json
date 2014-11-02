@@ -2,7 +2,7 @@
   "name": "traverser",
   "version": "0.0.1",
   "description": "Traversing files looking for photographs",
-  "main": "index.html",
+  "main": "app/index.html",
   "window": {
     "toolbar": true,
     "width": 800,
@@ -24,11 +24,11 @@
     "gulp-changed": "^1.0.0",
     "gulp-coffee": "^2.2.0",
     "gulp-coffeelint": "^0.4.0",
+    "gulp-jade": "^0.9.0",
     "gulp-shell": "^0.2.10",
     "main-bower-files": "^2.1.0",
     "nedb": "^0.11.1",
     "node-webkit-builder": "^0.1.4"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

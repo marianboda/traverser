@@ -37,9 +37,9 @@ shouldProcessFilter = (task, callback) ->
 
 app = angular.module('app',["ngRoute"])
 app.config ($routeProvider) ->
-  $routeProvider.when('/home', {templateUrl: 'src/templates/home.html', controller: 'HomeScreenCtrl'})
-  $routeProvider.when('/stats', {templateUrl: 'src/templates/stats.html', controller: 'StatsScreenCtrl'})
-  $routeProvider.when('/scan', {templateUrl: 'src/templates/scan.html', controller: 'ScanScreenCtrl'})
+  $routeProvider.when('/home', {templateUrl: 'templates/home.html', controller: 'HomeScreenCtrl'})
+  $routeProvider.when('/stats', {templateUrl: 'templates/stats.html', controller: 'StatsScreenCtrl'})
+  $routeProvider.when('/scan', {templateUrl: 'templates/scan.html', controller: 'ScanScreenCtrl'})
   .otherwise('/', {templateUrl: 'src/templates/home.html'})
 
 

@@ -1,0 +1,21 @@
+#con
+  button(ng-click='scan()', ng-init='count=0')
+    | SCAN
+  button(ng-click='scam()', ng-init='count=0')
+    | Increment
+  button(ng-click='count = count + 1; alert("some shit")', ng-init='count=0')
+    | Increment
+  span
+    | count: {{count}}
+  hr
+  span {{model.doneCount+model.errorCount}} / {{model.requestedCount}}
+  span(style='color:red') Errors:{{model.errorCount}}
+  hr
+  h3 Successful:
+  div(ng-repeat='file in model.files')
+    | {{file}}
+  hr
+  h3 Failed:
+  div(ng-repeat='file in model.errorFiles', style='color: red')
+    | {{file}}
+  hr

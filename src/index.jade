@@ -1,0 +1,26 @@
+doctype html
+html
+head
+    title Traverser
+    script(src='libs/jquery.js')
+    script(src='libs/angular.js')
+    script(src='libs/angular-route.js')
+    script(src='js/app.js')
+    script(src='js/ProcessService.js')
+    script(src='js/DbService.js')
+    script(src='js/HomeScreenCtrl.js')
+    script(src='js/ScanScreenCtrl.js')
+    script(src='js/StatsScreenCtrl.js')
+  body(ng-app='app', ng-controller='AppController')
+    header
+      nav
+        ul
+          li
+            a(href='#home') HOME
+          li
+            a(href='#scan') SCAN
+          li
+            a(href='#stats') STATS
+      hr
+    div(ng-view='ng-view')
+    hr
