@@ -9,7 +9,8 @@ app.controller 'ScanScreenCtrl', ($scope, DbService, ProcessService) ->
         requestedCount: 0
         errorCount: 0
         doneCount: 0
-      $scope.scan = => @runScan();
+        path: SOURCE_PATH
+      $scope.scan = => @runScan()
       $scope.scam = -> $scope.model.doneCount++
 
     runScan: ->
@@ -52,7 +53,7 @@ app.controller 'ScanScreenCtrl', ($scope, DbService, ProcessService) ->
       # 	dirCollection = db.collection 'directories'
       # 	file.walk dir, searchDir
 
-      file.walk SOURCE_PATH, searchDir
+      file.walk $scope.model.path, searchDir
 
       # fs.readdir path, (err, list) ->
       #   $scope.$apply( -> $scope.model.files = list )

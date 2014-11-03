@@ -28,6 +28,7 @@ menu.items[1].submenu.append new gui.MenuItem({label: 'New2'})
 menu.items[1].submenu.append new gui.MenuItem({label: 'Old2'})
 gui.Window.get().menu = menu
 gui.Window.get().showDevTools()
+menu.createMacBuiltin("traverser");
 
 getExt = (str) -> str.split('.').pop().toLowerCase()
 

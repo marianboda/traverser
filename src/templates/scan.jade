@@ -1,8 +1,10 @@
 #con
+  input(type="text" ng-model="model.path" style="width: 300px")
   button(ng-click='scan()')
     | SCAN
   hr
   span {{model.doneCount+model.errorCount}} / {{model.requestedCount}}
+  
   span(style='color:red') Errors:{{model.errorCount}}
   hr
   h3 Successful:
