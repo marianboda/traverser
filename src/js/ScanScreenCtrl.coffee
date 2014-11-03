@@ -52,7 +52,7 @@ app.controller 'ScanScreenCtrl', ($scope, DbService, ProcessService) ->
       # 	dirCollection = db.collection 'directories'
       # 	file.walk dir, searchDir
 
-      file.walk dir, searchDir
+      file.walk SOURCE_PATH, searchDir
 
       # fs.readdir path, (err, list) ->
       #   $scope.$apply( -> $scope.model.files = list )

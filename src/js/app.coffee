@@ -1,10 +1,25 @@
+SOURCE_PATH = "#{process.env.HOME}/temp/raw"
+USER_PATH = "#{process.env.HOME}/Documents/Photon"
+DB_PATH = "#{process.env.HOME}/Documents/Photon/db"
+THUMB_PATH = "#{process.env.HOME}/Documents/Photon/thumbs"
+PREVIEW_PATH = "#{process.env.HOME}/Documents/Photon/previews"
+
+previewSize = 2048
+thumbSize = 600
+collectionName = 'photo'
+acceptedFormats = ['jpg','jpe','jpeg','tif','tiff','cr2', 'mov']
+
 fs = require 'fs'
 file = require 'file'
 gui = require 'nw.gui'
 menu = new gui.Menu {type: 'menubar'}
 async = require 'async'
 exec = (require "child_process").exec
-DB_PATH = process.env.HOME + '/Documents'
+
+fs.mkdir USER_PATH, 0o755, ->
+  fs.mkdir DB_PATH, 0o755, ->
+  fs.mkdir THUMB_PATH, 0o755, ->
+  fs.mkdir PREVIEW_PATH, 0o755, ->
 
 menu.append new gui.MenuItem({label: 'App', submenu: new gui.Menu()})
 menu.append new gui.MenuItem({label: 'File',submenu: new gui.Menu()})
@@ -13,13 +28,6 @@ menu.items[1].submenu.append new gui.MenuItem({label: 'New2'})
 menu.items[1].submenu.append new gui.MenuItem({label: 'Old2'})
 gui.Window.get().menu = menu
 gui.Window.get().showDevTools()
-
-dir = '/Users/marianboda/temp/raw'
-# dir = '/Volumes/HardDrive/Foto/FOTO process'
-previewSize = 2048
-thumbSize = 600
-collectionName = 'photo'
-acceptedFormats = ['jpg','jpe','jpeg','tif','tiff','cr2', 'mov']
 
 getExt = (str) -> str.split('.').pop().toLowerCase()
 
@@ -58,43 +66,4 @@ app.controller 'AppController',
 
       DbService.getDirs().then (data) ->
         $scope.model.text = data.join()
-
-      return null
-
-      searchDir = (wha, dirname, dirs, files) ->
-        dir =
-          path: dirname
-          filesCount: files.length
-          dirsCount: dirs.length
-        console.log('dir: '+dir.path)
-        DbService.addDir dir
-
-        async.filter files, shouldProcessFilter, (r) ->
-          $scope.$apply ->
-            for photo in r
-              $scope.model.requestedCount++
-              # console.log 'process result: ',
-              console.log '%c processing '+photo, 'color: blue'
-              do (photo) ->
-                ProcessService.queue(photo).then (data) ->
-                  # console.log 'looks done to me ', data
-                  $scope.model.files.push(data.path)
-                  $scope.model.doneCount++
-                , (err) ->
-                  console.error 'got error here', err
-                  $scope.model.errorFiles.push(photo)
-
-                  $scope.model.errorCount++
-                , (notify) -> console.info 'notify on the app level'
-
-
-      # mongo.connect mongoUrl, (err, db) ->
-      # 	return console.log "could not connect #{err}".red if err?
-      # 	collection = db.collection collectionName
-      # 	dirCollection = db.collection 'directories'
-      # 	file.walk dir, searchDir
-
-      file.walk dir, searchDir
-
-      # fs.readdir path, (err, list) ->
-      #   $scope.$apply( -> $scope.model.files = list )
+      null

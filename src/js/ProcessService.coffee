@@ -1,9 +1,8 @@
 fs = require 'fs'
 gm = require 'gm'
-previewDir = process.env.HOME + '/temp/preview'
 thumbDir = process.env.HOME + '/temp/preview/thumb'
-getPrevPath = (photo) -> "#{previewDir}/#{photo.md5[0...16]}.jpg"
-getThumbPath = (photo) -> "#{thumbDir}/#{photo.md5[0...16]}.jpg"
+getPrevPath = (photo) -> "#{PREVIEW_PATH}/#{photo.md5[0...16]}.jpg"
+getThumbPath = (photo) -> "#{THUMB_PATH}/#{photo.md5[0...16]}.jpg"
 
 app.service 'ProcessService', ($q, DbService) ->
   class ProcessService
