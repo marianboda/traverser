@@ -35,7 +35,7 @@ shouldProcessFilter = (task, callback) ->
     return callback false
   callback true
 
-app = angular.module('app',["ngRoute"])
+app = angular.module('app',['ngRoute'])
 app.config ($routeProvider) ->
   $routeProvider.when('/home', {templateUrl: 'templates/home.html', controller: 'HomeScreenCtrl'})
   $routeProvider.when('/stats', {templateUrl: 'templates/stats.html', controller: 'StatsScreenCtrl'})

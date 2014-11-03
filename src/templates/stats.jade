@@ -1,1 +1,17 @@
 h1 Stats
+
+button(ng-click="clean()") CLEAN
+hr
+
+p Dirs: {{model.dirCount}}
+p Photos: {{model.photoCount}}
+hr
+  
+h2 Dirs
+div(ng-repeat='dir in model.dirs') {{dir}}
+hr
+div {{model.txt}}
+hr
+
+h2 Tree comes here
+tree(tree-data='model.tree')

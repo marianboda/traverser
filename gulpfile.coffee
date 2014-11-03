@@ -7,6 +7,7 @@ coffeelint = require 'gulp-coffeelint'
 Builder = require 'node-webkit-builder'
 changed = require 'gulp-changed'
 async = require 'async'
+inject = require 'gulp-inject'
 
 srcDirs =
   js: 'src'
@@ -22,6 +23,9 @@ paths =
 
 gulp.task 'bowerFiles', ->
   gulp.src(mainBowerFiles()).pipe(gulp.dest('app/libs'))
+
+gulp.task 'inject', ->
+  
 
 gulp.task 'lint', ->
   gulp.src('./src/*.coffee').pipe(coffeelint()).pipe(coffeelint.reporter())
