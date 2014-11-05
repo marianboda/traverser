@@ -8,6 +8,9 @@ Builder = require 'node-webkit-builder'
 changed = require 'gulp-changed'
 async = require 'async'
 inject = require 'gulp-inject'
+ignore = require 'gulp-ignore'
+flatten = require 'gulp-flatten'
+runSequence = require 'run-sequence'
 
 srcDirs =
   js: 'src'
@@ -25,11 +28,14 @@ gulp.task 'bowerFiles', ->
   gulp.src(mainBowerFiles()).pipe(gulp.dest('app/libs'))
 
 gulp.task 'inject', ->
+  console.log mainBowerFiles().map((a) -> 'app/libs/'+a.substr(a.lastIndexOf('/')+1))
   gulp.src('./app/index.html')
-  .pipe(inject(gulp.src('./app/libs/**/*.js', read: false), name: 'libs'))
-  .pipe(inject(gulp.src(['./app/js/**/*.js','!./app/js/app.js', './app/directives/**.*.js'], read: false), name: 'scripts'))
+  .pipe(inject(gulp.src(mainBowerFiles().map((a) -> 'app/libs/'+a.substr(a.lastIndexOf('/')+1)), {read: false}),
+    {name: 'libs', relative: true}))  
+  # .pipe(inject(gulp.src('app/libs/**/*', read: false), {name: 'libs', relative: true}))
+  .pipe(inject(gulp.src(['app/js/**/*.js','!app/js/app.js', 'app/directives/**.*.js'],
+    read: false), {name: 'scripts', relative: true}))
   .pipe(gulp.dest './app')
-  
 
 gulp.task 'lint', ->
   gulp.src('./src/*.coffee').pipe(coffeelint()).pipe(coffeelint.reporter())
@@ -64,5 +70,5 @@ gulp.task 'build', ['coffee'], ->
 
 gulp.task 'run', ['build'], shell.task('open ./build/traverser/osx/Traverser.app')
 
-
-gulp.task 'default', ['coffee', 'jade', 'inject'], ->
+gulp.task 'default', ->
+  runSequence ['coffee', 'jade'], 'inject'

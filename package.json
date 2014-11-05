@@ -24,6 +24,8 @@
     "gulp-changed": "^1.0.0",
     "gulp-coffee": "^2.2.0",
     "gulp-coffeelint": "^0.4.0",
+    "gulp-flatten": "0.0.4",
+    "gulp-ignore": "^1.2.1",
     "gulp-inject": "^1.0.2",
     "gulp-jade": "^0.9.0",
     "gulp-shell": "^0.2.10",
@@ -31,5 +33,7 @@
     "nedb": "^0.11.1",
     "node-webkit-builder": "^0.1.4"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "run-sequence": "^1.0.1"
+  }
 }
