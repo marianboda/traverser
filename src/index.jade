@@ -2,17 +2,14 @@ doctype html
 html
 head
     title Traverser
+    <!-- libs:js -->
+    <!-- endinject -->
+    <script src="/app/js/app.js"></script>
+    <!-- scripts:js -->
+    <!-- endinject -->
+
     link(rel='stylesheet', href='libs/angular-ui-tree.min.css') 
-    script(src='libs/jquery.js')
-    script(src='libs/angular.js')
-    script(src='libs/angular-route.js')
-    script(src='js/app.js')
-    script(src='js/ProcessService.js')
-    script(src='js/DbService.js')
-    script(src='js/HomeScreenCtrl.js')
-    script(src='js/ScanScreenCtrl.js')
-    script(src='js/StatsScreenCtrl.js')
-    script(src='directives/TreeDirective.js')
+
   body(ng-app='app', ng-controller='AppController')
     header
       nav

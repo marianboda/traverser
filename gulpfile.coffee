@@ -25,6 +25,10 @@ gulp.task 'bowerFiles', ->
   gulp.src(mainBowerFiles()).pipe(gulp.dest('app/libs'))
 
 gulp.task 'inject', ->
+  gulp.src('./app/index.html')
+  .pipe(inject(gulp.src('./app/libs/**/*.js', read: false), name: 'libs'))
+  .pipe(inject(gulp.src(['./app/js/**/*.js','!./app/js/app.js', './app/directives/**.*.js'], read: false), name: 'scripts'))
+  .pipe(gulp.dest './app')
   
 
 gulp.task 'lint', ->
@@ -61,4 +65,4 @@ gulp.task 'build', ['coffee'], ->
 gulp.task 'run', ['build'], shell.task('open ./build/traverser/osx/Traverser.app')
 
 
-gulp.task 'default', ['coffee', 'jade'], ->
+gulp.task 'default', ['coffee', 'jade', 'inject'], ->
