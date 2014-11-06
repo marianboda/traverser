@@ -28,9 +28,10 @@ gulp.task 'bowerFiles', ->
   gulp.src(mainBowerFiles()).pipe(gulp.dest('app/libs'))
 
 gulp.task 'inject', ->
-  console.log mainBowerFiles().map((a) -> 'app/libs/'+a.substr(a.lastIndexOf('/')+1))
+  libs = mainBowerFiles().map((a) -> 'app/libs/'+a.substr(a.lastIndexOf('/')+1))
+  libs.push 'app/libs/pure.base.css'
   gulp.src('./app/index.html')
-  .pipe(inject(gulp.src(mainBowerFiles().map((a) -> 'app/libs/'+a.substr(a.lastIndexOf('/')+1)), {read: false}),
+  .pipe(inject(gulp.src(libs, {read: false}),
     {name: 'libs', relative: true}))  
   # .pipe(inject(gulp.src('app/libs/**/*', read: false), {name: 'libs', relative: true}))
   .pipe(inject(gulp.src(['app/js/**/*.js','!app/js/app.js', 'app/directives/**.*.js'],
