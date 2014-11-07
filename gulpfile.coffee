@@ -11,6 +11,7 @@ inject = require 'gulp-inject'
 ignore = require 'gulp-ignore'
 flatten = require 'gulp-flatten'
 runSequence = require 'run-sequence'
+sass = require 'gulp-ruby-sass'
 
 srcDirs =
   js: 'src'
@@ -19,6 +20,7 @@ destDirs =
   js: 'app'
   lib: 'app/lib'
   templates:'app'
+  styles:'app/css'
 
 paths =
   csFiles: ["#{srcDirs.js}/**/*.coffee"]
@@ -36,6 +38,8 @@ gulp.task 'inject', ->
   # .pipe(inject(gulp.src('app/libs/**/*', read: false), {name: 'libs', relative: true}))
   .pipe(inject(gulp.src(['app/js/**/*.js','!app/js/app.js', 'app/directives/**.*.js'],
     read: false), {name: 'scripts', relative: true}))
+  .pipe(inject(gulp.src(['app/css/**/*.css'],
+    read: false), {name: 'styles', relative: true}))
   .pipe(gulp.dest './app')
 
 gulp.task 'lint', ->
@@ -50,6 +54,8 @@ gulp.task 'coffee', ->
 gulp.task 'jade', ->
   gulp.src(paths.jadeFiles).pipe(jade({pretty: true})).pipe(gulp.dest(destDirs.templates))
 
+gulp.task 'sass', ->
+  gulp.src('src/styles/**/*.sass').pipe(sass()).on('error', (e) -> console.log e).pipe(gulp.dest(destDirs.styles))
 
 gulp.task 'watch', ->
   gulp.watch [paths.csFiles], ['coffee']
@@ -72,4 +78,4 @@ gulp.task 'build', ['coffee'], ->
 gulp.task 'run', ['build'], shell.task('open ./build/traverser/osx/Traverser.app')
 
 gulp.task 'default', ->
-  runSequence ['coffee', 'jade'], 'inject'
+  runSequence ['coffee', 'jade', 'sass'], 'inject'
