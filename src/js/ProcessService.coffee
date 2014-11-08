@@ -37,34 +37,34 @@ app.service 'ProcessService', ($q, DbService) ->
         (callback) => @dbFind(photo).then (data) ->
           callback(null, data)
         ,(err) -> console.log 'chyba'; defer.reject("#{photo.path} already in DB"); callback "#{photo.path} in DB";
-
         (callback) => @md5(photo).then (data) =>
-          console.log 'hash:'+data+' %c'+photo.path, 'color: orange'
+          console.log "hash:#{data} %c#{photo.path}", 'color: orange'
           photo.md5 = data
-          defer.notify('md5 done')
-          callback(null,data)
+          defer.notify 'md5 done'
+          callback null, data
         (callback) => @exif(photo).then (data) ->
-          # console.log 'EXIF done:'
           photo.exif = data
-          defer.notify('exif done')
-          callback(null,data)
+          defer.notify 'exif done'
+          callback null, data
         (callback) => @preview(photo).then (data) ->
-          # console.log 'previewing?'
-          defer.notify('preview done')
-          callback(null,data)
-        (callback) => @thumb(photo).then (data) ->
-          # console.log 'thumbing? ', photo.path
-          defer.notify('thumb done')
-          callback(null,data)
-        , (err) ->
-          # console.log 'THIS WENT WRONG'
+          defer.notify 'preview done'
+          callback null, data
+        ,(err) ->
           defer.reject(err)
-          callback(err)
+          photo.preview = false
+          callback null, photo
+
+        (callback) => @thumb(photo).then (data) ->
+          defer.notify('thumb done')
+          callback null, data
+        , (err) ->
+          defer.reject(err)
+          photo.thumb = false
+          callback null, photo
 
         (callback) => @save(photo).then (data) ->
-          # console.log 'saving? ', photo.path
-          defer.notify('save done')
-          callback(null,data)
+          defer.notify 'save done'
+          callback null, data
       ], (err) ->
         defer.reject err if err?
 
