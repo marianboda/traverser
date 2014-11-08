@@ -16,6 +16,7 @@ sass = require 'gulp-ruby-sass'
 srcDirs =
   js: 'src'
   jade: 'src'
+  sass: 'src/styles'
 destDirs =
   js: 'app'
   lib: 'app/lib'
@@ -25,6 +26,7 @@ destDirs =
 paths =
   csFiles: ["#{srcDirs.js}/**/*.coffee"]
   jadeFiles: ["#{srcDirs.jade}/**/*.jade"]
+  sassFiles: ["#{srcDirs.sass}/**/*.sass"]
 
 gulp.task 'bowerFiles', ->
   gulp.src(mainBowerFiles()).pipe(gulp.dest('app/libs'))
@@ -54,12 +56,17 @@ gulp.task 'coffee', ->
 gulp.task 'jade', ->
   gulp.src(paths.jadeFiles).pipe(jade({pretty: true})).pipe(gulp.dest(destDirs.templates))
 
+gulp.task 'jadeAndInject', ->
+  runSequence 'jade', 'inject'
+
 gulp.task 'sass', ->
-  gulp.src('src/styles/**/*.sass').pipe(sass()).on('error', (e) -> console.log e).pipe(gulp.dest(destDirs.styles))
+  gulp.src(paths.sassFiles).pipe(sass()).on('error', (e) -> console.log e).pipe(gulp.dest(destDirs.styles))
+
 
 gulp.task 'watch', ->
   gulp.watch [paths.csFiles], ['coffee']
-  gulp.watch [paths.jadeFiles], ['jade']
+  gulp.watch [paths.jadeFiles], ['jadeAndInject']
+  gulp.watch [paths.sassFiles], ['sass']
 
 gulp.task 'build', ['coffee'], ->
   nw = new Builder

@@ -1,17 +1,18 @@
-#con
-  input(type="text" ng-model="model.path" style="width: 300px")
-  button(ng-click='scan()')
-    | SCAN
-  hr
-  span {{model.doneCount+model.errorCount}} / {{model.requestedCount}}
-  
-  span(style='color:red') Errors:{{model.errorCount}}
-  hr
-  h3 Successful:
-  div(ng-repeat='file in model.files')
-    | {{file}}
-  hr
-  h3 Failed:
-  div(ng-repeat='file in model.errorFiles', style='color: red')
-    | {{file}}
-  hr
+h1 scan
+
+input.ui.input(type="text" ng-model="model.path" style="width: 300px")
+button(ng-click='scan()' class='ui button')
+  | SCAN
+hr
+span.ui.blue.circular.label {{model.doneCount+model.errorCount}} / {{model.requestedCount}}
+
+span.ui.red.circular.label {{model.errorCount}}
+
+h3 Successful:
+div(ng-repeat='file in model.files')
+  | {{file}}
+hr
+h3 Failed:
+div(ng-repeat='file in model.errorFiles', style='color: red')
+  | {{file}}
+hr

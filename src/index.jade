@@ -3,9 +3,9 @@ html
 head
     title Traverser
     | 
-    <!-- styles:css -->
-    <!-- endinject -->
     <!-- libs:css -->
+    <!-- endinject -->
+    <!-- styles:css -->
     <!-- endinject -->
     <!-- libs:js -->
     <!-- endinject -->
@@ -14,15 +14,10 @@ head
     <!-- endinject -->
 
   body(ng-app='app', ng-controller='AppController')
-    header
-      nav
-        ul
-          li
-            a(href='#home') HOME
-          li
-            a(href='#scan') SCAN
-          li
-            a(href='#stats') STATS
+    .ui.inverted.fixed.main.menu
+      a.item(href='#home') HOME
+      a.item(href='#scan') SCAN
+      a.item(href='#stats') STATS
+
+    .content(ng-view='ng-view')
       hr
-    div(ng-view='ng-view')
-    hr
