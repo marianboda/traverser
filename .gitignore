@@ -5,3 +5,4 @@ build/
 Traverser.app
 cache/
 nw
+.sass-cache/

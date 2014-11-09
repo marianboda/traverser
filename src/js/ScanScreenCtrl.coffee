@@ -23,28 +23,29 @@ app.controller 'ScanScreenCtrl', ($scope, DbService, ProcessService) ->
       searchDir = (wha, dirname, dirs, files) ->
         dir =
           path: dirname
-          filesCount: files.length
-          dirsCount: dirs.length
-        console.log('dir: '+dir.path)
-        DbService.addDir dir
+          fileCount: files.length
+          dirCount: dirs.length
+        # console.log('dir: '+dir.path)
+        
 
         async.filter files, shouldProcessFilter, (r) ->
+          dir.catalogFileCount = r.length
+          DbService.addDir dir
           $scope.$apply ->
             for photo in r
               $scope.model.requestedCount++
               # console.log 'process result: ',
-              console.log '%c processing '+photo, 'color: blue'
-              do (photo) ->
-                ProcessService.queue(photo).then (data) ->
-                  # console.log 'looks done to me ', data
-                  $scope.model.files.push(data.path)
-                  $scope.model.doneCount++
-                , (err) ->
-                  console.error 'got error here', err
-                  $scope.model.errorFiles.push(photo)
+              # console.log '%c processing '+photo, 'color: blue'
+              # do (photo) ->
+              #   ProcessService.queue(photo).then (data) ->
+              #     $scope.model.files.push(data.path)
+              #     $scope.model.doneCount++
+              #   , (err) ->
+              #     console.error 'got error here', err
+              #     $scope.model.errorFiles.push(photo)
 
-                  $scope.model.errorCount++
-                , (notify) -> console.info 'notify on the app level'
+              #     $scope.model.errorCount++
+              #   , (notify) -> console.info 'notify on the app level'
 
 
       # mongo.connect mongoUrl, (err, db) ->

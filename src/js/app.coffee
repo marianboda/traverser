@@ -38,9 +38,9 @@ getOrientCommand = (num) ->
     	'-rotate 90','-flop -rotate 90','-rotate 270'][num]
 
 shouldProcessFilter = (task, callback) ->
-  console.log "#{task} is gonna be processed"
+  # console.log "#{task} is gonna be processed"
   if getExt(task) not in acceptedFormats
-    console.log "#{task} not recognized"
+    # console.log "#{task} not recognized"
     return callback false
   callback true
 

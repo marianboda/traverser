@@ -38,7 +38,7 @@ gulp.task 'inject', ->
   .pipe(inject(gulp.src(libs, {read: false}),
     {name: 'libs', relative: true}))  
   # .pipe(inject(gulp.src('app/libs/**/*', read: false), {name: 'libs', relative: true}))
-  .pipe(inject(gulp.src(['app/js/**/*.js','!app/js/app.js', 'app/directives/**.*.js'],
+  .pipe(inject(gulp.src(['app/js/**/*.js','!app/js/app.js'],
     read: false), {name: 'scripts', relative: true}))
   .pipe(inject(gulp.src(['app/css/**/*.css'],
     read: false), {name: 'styles', relative: true}))
