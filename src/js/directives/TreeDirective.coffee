@@ -1,7 +1,3 @@
-# app.directive 'tree', ->
-  # template: '<h1>Tree++</h1><ul><li ng-repeat="dir in data">{{dir}}</li></ul>'
-  # scope:
-  #   data: '='
 app.directive "tree", ($compile) ->
   restrict: "E"
   terminal: true
