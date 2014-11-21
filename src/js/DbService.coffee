@@ -6,8 +6,6 @@ db.dir.ensureIndex({fieldName: 'path', unique: true}, (err) ->
   console.error err if err?
 )
 
-# db.loadDatabase((err) -> console.error('db error', err) if err?)
-
 app.service 'DbService', ($q) ->
   class DbService
     constructor: ->
@@ -34,7 +32,6 @@ app.service 'DbService', ($q) ->
       db[collection].count filter, (err, count) ->
         defer.resolve(count)
       defer.promise
-
 
     addPhoto: (photo) ->
       defer = $q.defer()
